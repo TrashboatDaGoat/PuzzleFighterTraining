@@ -1,0 +1,150 @@
+<mamecheat version="1">
+
+  <cheat desc="Send 60 gems to P2 Now!">
+    <script state="on">
+      <action>maincpu.pb@FF849E=3C</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select DROP PATTERN"> <comment>Free player selection - Use on 'Stage X' or 'Select Difficulty' screens</comment>
+    <parameter>
+      <item value="0x01">Morrigan</item>
+      <item value="0x02">Chun-Li</item>
+      <item value="0x03">Ryu</item>
+      <item value="0x04">Ken</item>
+      <item value="0x05">Lei-Lei</item>
+      <item value="0x06">Donovan</item>
+      <item value="0x07">Felicia</item>
+      <item value="0x08">Sakura</item>
+      <item value="0x09">Devilot</item>
+      <item value="0x10">Akuma (Gouki)</item>
+      <item value="0x11">Dan</item>
+    </parameter>
+    <script state="run">
+      <action condition="(param==01)">maincpu.pb@FF8382=00</action>
+      <action condition="(param==02)">maincpu.pb@FF8382=01</action>
+      <action condition="(param==03)">maincpu.pb@FF8382=02</action>
+      <action condition="(param==04)">maincpu.pb@FF8382=03</action>
+      <action condition="(param==05)">maincpu.pb@FF8382=04</action>
+      <action condition="(param==06)">maincpu.pb@FF8382=05</action>
+      <action condition="(param==07)">maincpu.pb@FF8382=06</action>
+      <action condition="(param==08)">maincpu.pb@FF8382=07</action>
+      <action condition="(param==09)">maincpu.pb@FF8382=08</action>
+      <action condition="(param==10)">maincpu.pb@FF8382=09</action>
+      <action condition="(param==11)">maincpu.pb@FF8382=0A</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character"> <comment>Free player selection - Use on 'Stage X' or 'Select Difficulty' screens</comment>
+    <parameter>
+      <item value="0x01">Morrigan</item>
+      <item value="0x02">Chun-Li</item>
+      <item value="0x03">Ryu</item>
+      <item value="0x04">Ken</item>
+      <item value="0x05">Lei-Lei</item>
+      <item value="0x06">Donovan</item>
+      <item value="0x07">Felicia</item>
+      <item value="0x08">Sakura</item>
+      <item value="0x09">Devilot</item>
+      <item value="0x10">Akuma (Gouki)</item>
+      <item value="0x11">Dan</item>
+    </parameter>
+    <script state="run">
+      <action condition="(param==01)">maincpu.pb@FF0C82=00</action>
+      <action condition="(param==01)">maincpu.pb@FF8382=00</action>
+      <action condition="(param==02)">maincpu.pb@FF0C82=01</action>
+      <action condition="(param==02)">maincpu.pb@FF8382=01</action>
+      <action condition="(param==03)">maincpu.pb@FF0C82=02</action>
+      <action condition="(param==03)">maincpu.pb@FF8382=02</action>
+      <action condition="(param==04)">maincpu.pb@FF0C82=03</action>
+      <action condition="(param==04)">maincpu.pb@FF8382=03</action>
+      <action condition="(param==05)">maincpu.pb@FF0C82=04</action>
+      <action condition="(param==05)">maincpu.pb@FF8382=04</action>
+      <action condition="(param==06)">maincpu.pb@FF0C82=05</action>
+      <action condition="(param==06)">maincpu.pb@FF8382=05</action>
+      <action condition="(param==07)">maincpu.pb@FF0C82=06</action>
+      <action condition="(param==07)">maincpu.pb@FF8382=06</action>
+      <action condition="(param==08)">maincpu.pb@FF0C82=07</action>
+      <action condition="(param==08)">maincpu.pb@FF8382=07</action>
+      <action condition="(param==09)">maincpu.pb@FF0C82=08</action>
+      <action condition="(param==09)">maincpu.pb@FF8382=08</action>
+      <action condition="(param==10)">maincpu.pb@FF0C82=09</action>
+      <action condition="(param==10)">maincpu.pb@FF8382=09</action>
+      <action condition="(param==11)">maincpu.pb@FF0C82=0A</action>
+      <action condition="(param==11)">maincpu.pb@FF8382=0A</action>
+    </script>
+  </cheat>
+
+    <cheat desc="Ken (P1) does 75% damage">
+    <script state="run">
+      <action condition="maincpu.pb@FF0C82==03">maincpu.ob@FE3B=03</action>
+    </script>
+  </cheat>
+
+	<cheat desc="[testing] P1 can not increase handicap">
+    <script state="run">
+      <action>maincpu.ob@7AA0=51</action>
+    </script>
+  </cheat>
+  
+     <cheat desc="Ken (P2) does 75% damage">
+    <script state="run">
+      <action condition="maincpu.pb@FF0C86==03">maincpu.ob@FE3B=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Devilot does 100% damage">
+    <script state="run">
+      <action>maincpu.ob@FE3B=0B</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Akuma does 100% damage">
+    <script state="run">
+      <action>maincpu.ob@FE43=0B</action>
+    </script>
+  </cheat>
+  
+    <cheat desc="Devilot and Akuma both do 100% damage">
+    <script state="run">
+      <action>maincpu.ob@FE4A=E2</action>
+    </script>
+  </cheat>
+
+    <cheat desc="P1 timer doesn't count down at chr select">
+    <script state="run">
+      <action>maincpu.pb@FF8B0E=10</action>
+    </script>
+  </cheat>
+  
+      <cheat desc="P1 handicap always stuck at 00">
+    <script state="run">
+      <action>maincpu.pb@ff0c84=01</action>
+    </script>
+  </cheat>
+  
+      <cheat desc="P1 default to lowest handicap">
+    <script state="run">
+      <action>maincpu.ob@72D9=00</action>
+    </script>
+  </cheat>
+ 
+        <cheat desc="P2 default to lowest handicap">
+    <script state="run">
+      <action>maincpu.ob@72EF=00</action>
+    </script>
+  </cheat>
+  
+      <cheat desc="using coins doesn't reduce the # of coins">
+    <script state="run">
+      <action>maincpu.ob@28E5=09</action>
+    </script>
+  </cheat>
+  
+    <cheat desc="add coin gives 9 instead of 1">
+    <script state="run">
+      <action>maincpu.ob@16D3=44</action>
+    </script>
+  </cheat>
+  
+</mamecheat>
