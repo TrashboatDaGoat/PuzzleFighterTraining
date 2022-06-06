@@ -1,0 +1,44 @@
+Overaching Goals
+1. Make a quality training mode that let's players practice the game in a open environment
+2. make some extra functions that lets users practice in new ways
+3. Spite Capcom 
+
+
+Smaller Goals/Possible Features
+1. pressure play function
+ - P2 sends user repeated blows of X amount of garbage (with customizable timing between attacks)
+2. stopping P2 from dropping pieces 
+3. being able to delete garbage/pieces after dropping
+4. simple save states
+5. RNG seed entry/piece queue manipulation
+6. Drought timer
+7. Diamond glitch gui
+8. pieces dropped/ pieces til diamond
+9. Margin time options
+10. Handicap options
+=======================================6/2/2022=========================================
+
+* Made hotkey functions to reduce gems sent to a player
+
+* did N-Bee's exercises on using LUA
+
+=======================================6/3/2022=========================================
+
+* found the Memory address values for the current vertical height of a piece
+     - FF8315(P1) & FF8715(P2)
+* tried to keep the value constant with both MAME debugger and lua script, but no dice for now
+* looks like I made a mistake with hex counting. 
+*piece disappears if you hold down while soft dropping
+ -soft drop keeps the piece suspended in mid air
+*rotation get's kinda wacky (nvm this was just top board shenanigans)
+=======================================6/4/2022=========================================
+*made a MAME cheat to keep p2 piece at top board
+=======================================6/5/2022=========================================
+*mighta been today or yesterday, but I made a function that will automatically give diamonds on command, but the most it can give out is 10 diamonds in one match. (puzzlefighter/diamond.lua)
+probably has something to do with my not understanding hex math that much, but it's probably something hardcoded into the game
+
+*K.S. told me the addresses I was using for diamond counting and pieces dropped were wrong. They're words, not bytes, so they use more digits in the RAM and that made counting funky when I told the lua to read it as a byte. tysm hacker dog ^-^.
+
+=======================================6/6/2022=========================================
+*tried to refactor the current GUI into a separate module. Didn't work 
+*cleaning up some stuff before I push this to Git so NBee can help with the menu stuff
