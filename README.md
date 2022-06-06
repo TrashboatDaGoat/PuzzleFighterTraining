@@ -1,7 +1,7 @@
 # PuzzleFighterTraining
 package to help puzzle fighter players practice chains and other stuff with the Arcade ROM of puzzle fighter
 place both the run_spf2t_training.bat and puzzlefighter fold in ..../Fightcade/emulator/fbneo folder (try to make sure there are no spaces in your filepath
-Idk we're still working on it. 
+run run_spf2t_training.bat to fire up training mode. should work with either arcade or 2p about the same
 Instructions:
 Lua hotkeys for special actions atm (bind them using FBNeo input options)
 1: send queue'd Gems to both players
