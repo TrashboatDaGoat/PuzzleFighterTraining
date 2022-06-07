@@ -1,10 +1,19 @@
 -- This is how to do modules in lua so you keep your code neat.
 -- See bottom of util file for export.
-local util              = require './puzzlefighter/util'
---local gui 				= require './puzzlefighter/gui'
+serialize  	            = require './scripts/ser' -- If you print out a table and get funky stuff, use this! print(serialize(mytable))
+util                    = require './puzzlefighter/util'
+guiModule 		        = require './puzzlefighter/GUI'
+menuModule              = require './puzzlefighter/menu'
+playerObject            = require './puzzlefighter/playerObject'
+configModule            = require './puzzlefighter/config'
+training_settings_file  = "training_settings.json"
+training_settings       = configModule.default_training_settings
 
 globals = {
     options = {
+        current_frame = 0,
+        training_options = nil,
+        menuModule = nil, 
         p1 = {
             currentPattern = 0x0,
             gemsToDrop = 0x0,
@@ -23,7 +32,7 @@ globals = {
 input.registerhotkey(1, function()
     -- print("Send "..globals.options.p2.gemsToDrop.." gems to p2!")
     memory.writebyte(0xFF849E, globals.options.p1.gemsToDrop) -- Send  Gems to P2
-	memory.writebyte("0xFF889E", globals.options.p2.gemsToDrop) -- Send gems to P1
+	memory.writebyte(0xFF889E, globals.options.p2.gemsToDrop) -- Send gems to P1
 end)
 
 --input.registerhotkey(2, function()
@@ -31,7 +40,7 @@ end)
   --  memory.writebyte(0xFF889E, globals.options.p2.gemsToDrop) -- Send 60 Gems to P2
 --end)
 input.registerhotkey(2, function()
-
+    -- This doesnt need the subtraction
 	memory.writeword(0xFF84F4, memory.readword(0xFF84F6)-0x01) -- get diamond
 
 end)
@@ -117,21 +126,51 @@ input.registerhotkey(8, function()
 end)
 
 input.registerhotkey(9, function()
-
 end)
 
 -- Exercise: Move this to the util module
 
 emu.registerstart(function() -- Called when lua is started
+    util.load_training_data()
+	globals["training_options"] = configModule.registerBefore()
+    globals["current_frame"] = emu.framecount()
+    
+    player_objects = {
+		playerObject.make_player_object(1, 0xFF8400, "P1"),
+		playerObject.make_player_object(2, 0xFF8800, "P2")
+	}
+    globals.menuModule = menuModule.registerStart()
     util.print_training_info()
 end)
 
-emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs here)
+-- You can use this to do something based on the value conditionally
+-- See gui.register
+local pedagogical_list_state = nil
+local function get_pedagogical_list()
 
-    -- Infinite time on CSS
-    memory.writebyte(0xFF8B0E, 0x10) -- P1 Timer never changes
-    memory.writebyte(0xFF8B0E + 0x100, 0x10) -- P2 Timer never changes
+	current_pedagogical_list_value = globals.training_options.pedagogical_list
+	if current_pedagogical_list_value == 1  then
+		pedagogical_list_state = "doing something with sample list 1"
+	elseif current_pedagogical_list_value == 2 then
+		pedagogical_list_state = "doing something with sample list 2"
+	elseif current_pedagogical_list_value == 3 then
+		pedagogical_list_state = "doing something with sample list 3"
+	elseif current_pedagogical_list_value == 4 then
+		pedagogical_list_state = "doing something with sample list 4"
+	end
 	
+	return pedagogical_list_state
+end
+
+emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs here)
+    globals["current_frame"] = emu.framecount()
+    util.handle_hotkeys()
+    -- Infinite time on CSS
+    
+    if globals.training_options.infinite_time == true then
+        memory.writebyte(0xFF8B0E, 0x10) -- P1 Timer never changes
+        memory.writebyte(0xFF8B0E + 0x100, 0x10) -- P2 Timer never changes
+    end
 	--  to keep the gems floating
 	memory.writebyte(0xFF8715, 0x07) --P2
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
@@ -142,6 +181,8 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
     
    
 	globals.options.p1.piecesDropped = memory.readword(0xFF84F4)
+    playerObject.read_player_vars(player_objects[1], player_objects[2])
+
 	
 end)
 emu.registerafter(function() -- Called after a frame is drawn
@@ -164,23 +205,8 @@ end)
 
 while true do
 	gui.register(function() -- This is where gui type things go
-       -- Practice -- Refactor this to a module
-        -- x, y, text, color
-        -- use .. to combine text
-        local base_y = 64
-        local p1_base_x = 117
-        local p2_offset = 80
-        local p2_base_x = p1_base_x + p2_offset
-        -- Note: color is 0xRRGGBBAA (Red Green Blue alpha, values 0 to FF (0-255))
-        gui.box( p1_base_x - 3, base_y - 3, p1_base_x + 150, base_y + 42, 0x00000088)
-        gui.text(p1_base_x,base_y, "P1 Char: "..util.get_character_name_from_hex( globals.options.p1.currentPattern ), "green")
-        gui.text(p1_base_x,base_y + 8, "P1 Drop #: "..globals.options.p1.gemsToDrop, "red")
-		gui.text(p1_base_x,base_y + 16, "P1 Pieces Dropped: "..globals.options.p1.piecesDropped, "yellow" )
-		gui.text(p1_base_x,base_y + 24, "P1 Diamond #: "..memory.readword(0xFF84F8), "yellow" )
-        gui.text(p2_base_x,base_y, "P2 Char: "..util.get_character_name_from_hex( globals.options.p2.currentPattern ), "green")
-        gui.text(p2_base_x,base_y + 8, "P2 Drop #: "..globals.options.p2.gemsToDrop, "red")
-		
-    
+        guiModule.draw_gui()
+        menuModule.guiRegister()
     end)
     emu.frameadvance() -- Do not remove this!
 end
