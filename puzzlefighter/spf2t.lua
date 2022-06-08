@@ -18,13 +18,15 @@ globals = {
             currentPattern = 0x0,
             gemsToDrop = 0x0,
 			piecesDropped = 0x0,
-			diamondNumber = 0x00
+			diamondNumber = 0x00,
+			timePassed = 0x00
         },
         p2 = {
             currentPattern = 0x0,
             gemsToDrop = 0x0,
 			piecesDropped = 0x0,
-			diamondNumber = 0x00
+			diamondNumber = 0x00,
+			timePassed = 0x00
         }
     },
 }
@@ -145,60 +147,61 @@ end)
 
 -- You can use this to do something based on the value conditionally
 -- See gui.register
-local pedagogical_list_state = nil
-local function get_pedagogical_list()
+local p1_character_state = 12
+local function get_p1_character()
 
 	currentPattern = globals.options.p1.currentPattern
-	if current_pedagogical_list_value == 1  then
+	if current_p1_character_value == 1  then
 		currentPattern = 0x01
 		globals.options.p1.currentPattern = currentPattern
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 2 then
+	elseif current_p1_character_value == 2 then
 		currentPattern = 0x02
 		globals.options.p1.currentPattern = currentPattern
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 3 then
+	elseif current_p1_character_value == 3 then
 		currentPattern = 0x03
 		globals.options.p1.currentPattern = currentPattern
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 4 then
+	elseif current_p1_character_value == 4 then
 		currentPattern = 0x04
 		globals.options.p1.currentPattern = currentPattern
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 5 then
+	elseif current_p1_character_value == 5 then
 		currentPattern = 0x05
 		globals.options.p1.currentPattern = currentPattern
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 6 then
+	elseif current_p1_character_value == 6 then
 		currentPattern = 0x06
 		globals.options.p1.currentPattern = currentPattern
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 7 then
+	elseif current_p1_character_value == 7 then
 		currentPattern = 0x07
 		globals.options.p1.currentPattern = currentPattern	
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 8 then
+	elseif current_p1_character_value == 8 then
 		currentPattern = 0x08
 		globals.options.p1.currentPattern = currentPattern
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 9 then
+	elseif current_p1_character_value == 9 then
 		currentPattern = 0x09
 		globals.options.p1.currentPattern = currentPattern
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 10 then
+	elseif current_p1_character_value == 10 then
 		currentPattern = 0x0A
 		globals.options.p1.currentPattern = currentPattern
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 11 then
+	elseif current_p1_character_value == 11 then
 		currentPattern = 0x00
 		globals.options.p1.currentPattern = currentPattern
 		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_pedagogical_list_value == 12 then
+	elseif current_p1_character_value == 12 then
 		
 	end
 	
-	return pedagogical_list_state
+	return p1_character_state
 end
+
 
 emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs here)
     globals["current_frame"] = emu.framecount()
@@ -210,10 +213,8 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
         memory.writebyte(0xFF8B0E + 0x100, 0x10) -- P2 Timer never changes
     end
 	--  to keep the gems floating
-	if memory.readword(0xFF9040 ) > 0 then
-		memory.writebyte(0xFF8715, 0x02) --P2
+	memory.writebyte(0xFF8715, 0x07) --P2
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
-	end
 
 	--Keep margin time @ level 1
 --memory.writeword(0xFF8640, 0x00)
@@ -222,7 +223,7 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
    
 	globals.options.p1.piecesDropped = memory.readword(0xFF84F4)
     playerObject.read_player_vars(player_objects[1], player_objects[2])
-
+	globals.options.p2.timePassed = memory.readword(0xFF9040)
 	
 end)
 emu.registerafter(function() -- Called after a frame is drawn
