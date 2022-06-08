@@ -148,15 +148,53 @@ end)
 local pedagogical_list_state = nil
 local function get_pedagogical_list()
 
-	current_pedagogical_list_value = globals.training_options.pedagogical_list
+	currentPattern = globals.options.p1.currentPattern
 	if current_pedagogical_list_value == 1  then
-		pedagogical_list_state = "doing something with sample list 1"
+		currentPattern = 0x01
+		globals.options.p1.currentPattern = currentPattern
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
 	elseif current_pedagogical_list_value == 2 then
-		pedagogical_list_state = "doing something with sample list 2"
+		currentPattern = 0x02
+		globals.options.p1.currentPattern = currentPattern
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
 	elseif current_pedagogical_list_value == 3 then
-		pedagogical_list_state = "doing something with sample list 3"
+		currentPattern = 0x03
+		globals.options.p1.currentPattern = currentPattern
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
 	elseif current_pedagogical_list_value == 4 then
-		pedagogical_list_state = "doing something with sample list 4"
+		currentPattern = 0x04
+		globals.options.p1.currentPattern = currentPattern
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
+	elseif current_pedagogical_list_value == 5 then
+		currentPattern = 0x05
+		globals.options.p1.currentPattern = currentPattern
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
+	elseif current_pedagogical_list_value == 6 then
+		currentPattern = 0x06
+		globals.options.p1.currentPattern = currentPattern
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
+	elseif current_pedagogical_list_value == 7 then
+		currentPattern = 0x07
+		globals.options.p1.currentPattern = currentPattern	
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
+	elseif current_pedagogical_list_value == 8 then
+		currentPattern = 0x08
+		globals.options.p1.currentPattern = currentPattern
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
+	elseif current_pedagogical_list_value == 9 then
+		currentPattern = 0x09
+		globals.options.p1.currentPattern = currentPattern
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
+	elseif current_pedagogical_list_value == 10 then
+		currentPattern = 0x0A
+		globals.options.p1.currentPattern = currentPattern
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
+	elseif current_pedagogical_list_value == 11 then
+		currentPattern = 0x00
+		globals.options.p1.currentPattern = currentPattern
+		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
+	elseif current_pedagogical_list_value == 12 then
+		
 	end
 	
 	return pedagogical_list_state
@@ -172,8 +210,10 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
         memory.writebyte(0xFF8B0E + 0x100, 0x10) -- P2 Timer never changes
     end
 	--  to keep the gems floating
-	memory.writebyte(0xFF8715, 0x07) --P2
+	if memory.readword(0xFF9040 ) > 0 then
+		memory.writebyte(0xFF8715, 0x02) --P2
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
+	end
 
 	--Keep margin time @ level 1
 --memory.writeword(0xFF8640, 0x00)
