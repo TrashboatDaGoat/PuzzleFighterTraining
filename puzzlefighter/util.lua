@@ -22,11 +22,10 @@ local function print_training_info()
     print("2: Free Diamond")
     print("3: Change p1 pattern/char")
     print("4: Change p2 pattern/char")
-	print("5: Add Gems to Drop on P2")
-	print("6: Add Gems to Drop on P1")
-	print("7: Minus Gems to Drop on P2")
-	print("8: Minus Gems to Drop on P1")
-	
+    print("5: Add Gems to Drop on P2")
+    print("6: Add Gems to Drop on P1")
+    print("7: Minus Gems to Drop on P2")
+    print("8: Minus Gems to Drop on P1")
 end
 
 local function get_character_hex_from_name( name )
