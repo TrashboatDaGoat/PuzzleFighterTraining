@@ -1,6 +1,7 @@
 {
-  "pedagogical_list":1,
-  "pedagogical_integer":4,
   "show_display":true,
-  "infinite_time":true
+  "infinite_time":true,
+  "p1_character":12,
+  "pedagogical_integer":4,
+  "p1_character":1
 }

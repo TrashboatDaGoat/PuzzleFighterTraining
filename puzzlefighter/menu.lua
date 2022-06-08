@@ -577,13 +577,20 @@ function make_popup(_left, _top, _right, _bottom, _entries)
   return _p
 end
 
-local pedagogical_list = {
-  "One",
-  "Two",
-  "Three",
-  "Four",
+local p1_character = {
+  "Chun_li",
+  "Ryu",
+  "Ken",
+  "Lei-Lei",
+  "Donovan",
+  "Felicia",
+  "Sakura",
+  "Devilot",
+  "Akuma",
+  "Dan",
+  "Morrigan",
+  "Select Character",
 }
-
 local function get_menu() 
 return {
     {
@@ -592,7 +599,7 @@ return {
           --                    Name            Settings      Default    Key on Training Mode Json Object         Description
           checkbox_menu_item("Infinite Time", training_settings, "infinite_time",true, "Setting this will cause the timer to not \ndecrement on the Character Select Screen"),
           -- Parameters: _name, _object, _property_name, _list, _default_value, _item_description, _default_description
-          list_menu_item("Pedagogical List", training_settings, "pedagogical_list", pedagogical_list,1,"This is a sample list. The values are actually 1,2,3,4"),
+           list_menu_item("P1 Character", training_settings, "p1_character", p1_character,12,"Change the garbage pattern used by P1"),
           -- Parameters: _name, _object, _property_name, _min, _max, _loop, _default_value, _autofire_rate, description
           integer_menu_item("Pedagogical Integer", training_settings, "pedagogical_integer", 0, 288, false, 288, nil, "The Pedagogy"),
 
