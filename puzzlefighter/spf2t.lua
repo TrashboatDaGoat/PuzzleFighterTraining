@@ -30,6 +30,45 @@ globals = {
         }
     },
 }
+-- Remember all that this function does is map the number value from the menu
+-- To a hex for a pattern, use it when doing memory.writebyte()
+-- To do, move these types of functions to another file
+local function get_p1_character()
+    local training_options_p1_character = globals.training_options.p1_character
+	local currentPattern = globals.options.p1.currentPattern
+    -- If we reordered these I think we wouldn't even need the if/elseif block
+    -- e.g I think 0x0A == 10
+    if training_options_p1_character == 1  then
+		currentPattern = 0x01
+	elseif training_options_p1_character == 2 then
+		currentPattern = 0x02
+	elseif training_options_p1_character == 3 then
+		currentPattern = 0x03
+	elseif training_options_p1_character == 4 then
+		currentPattern = 0x04
+	elseif training_options_p1_character == 5 then
+		currentPattern = 0x05
+	elseif training_options_p1_character == 6 then
+		currentPattern = 0x06
+	elseif training_options_p1_character == 7 then
+		currentPattern = 0x07
+	elseif training_options_p1_character == 8 then
+		currentPattern = 0x08
+	elseif training_options_p1_character == 9 then
+		currentPattern = 0x09
+	elseif training_options_p1_character == 10 then
+		currentPattern = 0x0A
+	elseif training_options_p1_character == 11 then
+		currentPattern = 0x00
+	elseif training_options_p1_character == 12 then
+		
+	end
+    -- Update our local options
+    globals.options.p1.currentPattern = currentPattern
+	-- Return for convenience, we could just key into globals.options.p1.currentPattern
+	return currentPattern
+end
+
 -- Hotkeys (set in menu)
 input.registerhotkey(1, function()
     -- print("Send "..globals.options.p2.gemsToDrop.." gems to p2!")
@@ -50,15 +89,17 @@ end)
 
 -- Drop Pattern for P1
 input.registerhotkey(3, function()
-    local currentPattern = globals.options.p1.currentPattern
+    local currentPattern = get_p1_character()
     currentPattern = currentPattern + 1
 
     if currentPattern > 0x0A then
         currentPattern = 0x00
     end
 
-    globals.options.p1.currentPattern = currentPattern
-	memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
+    globals.training_options.p1_character = currentPattern
+    -- Because we want our options to be able to changed by a hotkey
+    -- OR a training menu change, we need to save the training data to keep in sync
+    util.save_training_data()
 end)
 
 -- Drop Pattern for P2
@@ -147,60 +188,6 @@ end)
 
 -- You can use this to do something based on the value conditionally
 -- See gui.register
-local p1_character_state = 12
-local function get_p1_character()
-
-	currentPattern = globals.options.p1.currentPattern
-	if current_p1_character_value == 1  then
-		currentPattern = 0x01
-		globals.options.p1.currentPattern = currentPattern
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 2 then
-		currentPattern = 0x02
-		globals.options.p1.currentPattern = currentPattern
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 3 then
-		currentPattern = 0x03
-		globals.options.p1.currentPattern = currentPattern
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 4 then
-		currentPattern = 0x04
-		globals.options.p1.currentPattern = currentPattern
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 5 then
-		currentPattern = 0x05
-		globals.options.p1.currentPattern = currentPattern
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 6 then
-		currentPattern = 0x06
-		globals.options.p1.currentPattern = currentPattern
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 7 then
-		currentPattern = 0x07
-		globals.options.p1.currentPattern = currentPattern	
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 8 then
-		currentPattern = 0x08
-		globals.options.p1.currentPattern = currentPattern
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 9 then
-		currentPattern = 0x09
-		globals.options.p1.currentPattern = currentPattern
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 10 then
-		currentPattern = 0x0A
-		globals.options.p1.currentPattern = currentPattern
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 11 then
-		currentPattern = 0x00
-		globals.options.p1.currentPattern = currentPattern
-		memory.writebyte(0xFF8382, globals.options.p1.currentPattern)
-	elseif current_p1_character_value == 12 then
-		
-	end
-	
-	return p1_character_state
-end
 
 
 emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs here)
@@ -212,6 +199,10 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
         memory.writebyte(0xFF8B0E, 0x10) -- P1 Timer never changes
         memory.writebyte(0xFF8B0E + 0x100, 0x10) -- P2 Timer never changes
     end
+    -- Set current character
+    -- Notice it uses the value from our getter function
+    memory.writebyte(0xFF8382, get_p1_character())
+
 	--  to keep the gems floating
 	memory.writebyte(0xFF8715, 0x07) --P2
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
