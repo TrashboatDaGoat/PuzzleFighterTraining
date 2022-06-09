@@ -578,6 +578,7 @@ function make_popup(_left, _top, _right, _bottom, _entries)
 end
 
 local p1_character = {
+  "Morrigan",
   "Chun_li",
   "Ryu",
   "Ken",
@@ -588,7 +589,6 @@ local p1_character = {
   "Devilot",
   "Akuma",
   "Dan",
-  "Morrigan",
   "Select Character",
 }
 local function get_menu() 
@@ -639,9 +639,16 @@ main_menu_selected_index = 1
 is_main_menu_selected = true
 sub_menu_selected_index = 1
 current_popup = nil
+function piecePause()
+    memory.writebyte(0xFF8315, 0x02)
+   end
 
 function togglemenu()
+if globals.options.in_match == false then
+	return
+end
 	globals.show_menu =  not globals.show_menu
+	 
 end
 local is_main_menu_selected = true
 menuModule = {

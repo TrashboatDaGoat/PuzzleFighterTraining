@@ -11,15 +11,17 @@ training_settings       = configModule.default_training_settings
 
 globals = {
     options = {
+		in_match = false,
         current_frame = 0,
         training_options = nil,
         menuModule = nil, 
+		show_menu = nil,
         p1 = {
             currentPattern = 0x0,
             gemsToDrop = 0x0,
-			piecesDropped = 0x0,
+			piecesDropped = 0x00,
 			diamondNumber = 0x00,
-			timePassed = 0x00
+			
         },
         p2 = {
             currentPattern = 0x0,
@@ -39,29 +41,29 @@ local function get_p1_character()
     -- If we reordered these I think we wouldn't even need the if/elseif block
     -- e.g I think 0x0A == 10
     if training_options_p1_character == 1  then
-		currentPattern = 0x01
-	elseif training_options_p1_character == 2 then
-		currentPattern = 0x02
-	elseif training_options_p1_character == 3 then
-		currentPattern = 0x03
-	elseif training_options_p1_character == 4 then
-		currentPattern = 0x04
-	elseif training_options_p1_character == 5 then
-		currentPattern = 0x05
-	elseif training_options_p1_character == 6 then
-		currentPattern = 0x06
-	elseif training_options_p1_character == 7 then
-		currentPattern = 0x07
-	elseif training_options_p1_character == 8 then
-		currentPattern = 0x08
-	elseif training_options_p1_character == 9 then
-		currentPattern = 0x09
-	elseif training_options_p1_character == 10 then
-		currentPattern = 0x0A
-	elseif training_options_p1_character == 11 then
 		currentPattern = 0x00
+	elseif training_options_p1_character == 2 then
+		currentPattern = 0x01
+	elseif training_options_p1_character == 3 then
+		currentPattern = 0x02
+	elseif training_options_p1_character == 4 then
+		currentPattern = 0x03
+	elseif training_options_p1_character == 5 then
+		currentPattern = 0x04
+	elseif training_options_p1_character == 6 then
+		currentPattern = 0x05
+	elseif training_options_p1_character == 7 then
+		currentPattern = 0x06
+	elseif training_options_p1_character == 8 then
+		currentPattern = 0x07
+	elseif training_options_p1_character == 9 then
+		currentPattern = 0x08
+	elseif training_options_p1_character == 10 then
+		currentPattern = 0x09
+	elseif training_options_p1_character == 11 then
+		currentPattern = 0x0A
 	elseif training_options_p1_character == 12 then
-		
+		currentPattern = globals.options.p1.currentPattern
 	end
     -- Update our local options
     globals.options.p1.currentPattern = currentPattern
@@ -81,7 +83,7 @@ end)
   --  memory.writebyte(0xFF889E, globals.options.p2.gemsToDrop) -- Send 60 Gems to P2
 --end)
 input.registerhotkey(2, function()
-    -- This doesnt need the subtraction
+    -- This doesnt need the subtraction. Counterpoint yes it does
 	memory.writeword(0xFF84F4, memory.readword(0xFF84F6)-0x01) -- get diamond
 
 end)
@@ -193,25 +195,38 @@ end)
 emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs here)
     globals["current_frame"] = emu.framecount()
     util.handle_hotkeys()
+	--in game indicator
+	if memory.readword(0xFF8640) > 0 then
+	globals.options.in_match = true
+	else globals.options.in_match = false
+	end
     -- Infinite time on CSS
     
+	--Pause piece whenever the menu comes up. look @ menu.lua line 647 for Xref
+	--if globals.show_menu == true then
+		--menu.piecePause()
+		
+	end
     if globals.training_options.infinite_time == true then
         memory.writebyte(0xFF8B0E, 0x10) -- P1 Timer never changes
         memory.writebyte(0xFF8B0E + 0x100, 0x10) -- P2 Timer never changes
     end
     -- Set current character
     -- Notice it uses the value from our getter function
-    memory.writebyte(0xFF8382, get_p1_character())
-
+    if in_match == true then 
+	memory.writebyte(0xFF8382, get_p1_character())
+	end
+	
 	--  to keep the gems floating
 	memory.writebyte(0xFF8715, 0x07) --P2
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
 
 	--Keep margin time @ level 1
---memory.writeword(0xFF8640, 0x00)
+memory.writeword(0xFF8640, 0x00)
 --memory.writeword(0xFF8640 + 0x400, 0x00)
     
    
+	--read how many pieces P! has dropped in the game
 	globals.options.p1.piecesDropped = memory.readword(0xFF84F4)
     playerObject.read_player_vars(player_objects[1], player_objects[2])
 	globals.options.p2.timePassed = memory.readword(0xFF9040)
@@ -242,6 +257,3 @@ while true do
     end)
     emu.frameadvance() -- Do not remove this!
 end
-
-
-
