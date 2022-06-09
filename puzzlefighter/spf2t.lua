@@ -206,7 +206,7 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
 	--if globals.show_menu == true then
 		--menu.piecePause()
 		
-	end
+	--end
     if globals.training_options.infinite_time == true then
         memory.writebyte(0xFF8B0E, 0x10) -- P1 Timer never changes
         memory.writebyte(0xFF8B0E + 0x100, 0x10) -- P2 Timer never changes
