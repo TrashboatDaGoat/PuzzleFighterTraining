@@ -21,7 +21,8 @@ globals = {
             gemsToDrop = 0x0,
 			piecesDropped = 0x00,
 			diamondNumber = 0x00,
-			
+			gameTime = 0x00,
+			marginFix = false,
         },
         p2 = {
             currentPattern = 0x0,
@@ -32,6 +33,59 @@ globals = {
         }
     },
 }
+
+local function get_margin_time()
+	local training_options_margin_time = globals.training_options.margin_time
+	local gameTime = globals.options.p1.gameTime
+	local marginFix = globals.options.p1.marginFix
+	
+	if training_options_margin_time == 1 then
+		gameTime = 0x02
+		marginFix = true
+	elseif training_options_margin_time == 2 then
+		gameTime = 0x4C
+		marginFix = true
+	elseif training_options_margin_time == 3 then
+		gameTime = 0x6A
+		marginFix = true
+	elseif training_options_margin_time == 4 then
+		gameTime = 0x88
+		marginFix = true
+	elseif training_options_margin_time == 5 then
+		gameTime = 0xA6
+		marginFix = true
+	elseif training_options_margin_time == 6 then
+		gameTime = 0xC4
+		marginFix = true
+	elseif training_options_margin_time == 7 then
+		gameTime = 0xE2
+		marginFix = true
+	elseif training_options_margin_time == 8 then
+		gameTime = 0x100
+		marginFix = true
+	elseif training_options_margin_time == 9 then
+		gameTime = 0x11E
+		marginFix = true
+	elseif training_options_margin_time == 10 then
+		gameTime = 0x13C
+		marginFix = true
+	elseif training_options_margin_time == 11 then
+		gameTime = 0x15A
+		marginFix = true
+	elseif training_options_margin_time == 12 then
+		gameTime = 0x178
+		marginFix = true
+	elseif training_options_margin_time == 13 then
+		gameTime = 0x196
+		marginFix = true
+	elseif training_options_margin_time == 0 then
+		gameTime = 0x01
+		marginFix = false
+	end
+	globals.options.p1.gameTime = gameTime
+	globals.options.p1.marginFix = marginFix
+	return gameTime and marginFix
+end
 -- Remember all that this function does is map the number value from the menu
 -- To a hex for a pattern, use it when doing memory.writebyte()
 -- To do, move these types of functions to another file
@@ -105,7 +159,6 @@ input.registerhotkey(3, function()
 end)
 
 -- Drop Pattern for P2
--- Practice: Refactor to use one single function for both p1 or p2 drop pattern changes
 input.registerhotkey(4, function()
     local currentPattern = globals.options.p2.currentPattern
     currentPattern = currentPattern + 1
@@ -221,11 +274,10 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
 	memory.writebyte(0xFF8715, 0x07) --P2
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
 
-	--Keep margin time @ level 1
-if memory.readword(0xFF8640) > 0x4A then
-		memory.writeword(0xFF8640, 0x01)
+	--adjust margin time with settings
+if  memory.readword(0xFF8640) > (globals.options.p1.gameTime + 0x1A) then
+        memory.writeword(0xFF8640, globals.options.p1.gameTime)
 end
-
 --memory.writeword(0xFF8640 + 0x400, 0x00)
     
    
