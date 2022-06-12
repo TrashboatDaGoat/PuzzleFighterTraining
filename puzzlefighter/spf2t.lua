@@ -15,7 +15,7 @@ globals = {
         current_frame = 0,
         training_options = nil,
         menuModule = nil, 
-		show_menu = nil,
+		show_menu = false,
         p1 = {
             currentPattern = 0x0,
             gemsToDrop = 0x0,
@@ -203,10 +203,10 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
     -- Infinite time on CSS
     
 	--Pause piece whenever the menu comes up. look @ menu.lua line 647 for Xref
-	--if globals.show_menu == true then
-		--menu.piecePause()
+	if globals.show_menu == true then
+		menuModule.piecePause()
 		
-	--end
+	end
     if globals.training_options.infinite_time == true then
         memory.writebyte(0xFF8B0E, 0x10) -- P1 Timer never changes
         memory.writebyte(0xFF8B0E + 0x100, 0x10) -- P2 Timer never changes
@@ -222,7 +222,10 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
 
 	--Keep margin time @ level 1
-memory.writeword(0xFF8640, 0x00)
+if memory.readword(0xFF8640) > 0x4A then
+		memory.writeword(0xFF8640, 0x01)
+end
+
 --memory.writeword(0xFF8640 + 0x400, 0x00)
     
    
