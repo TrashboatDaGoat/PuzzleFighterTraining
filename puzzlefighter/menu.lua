@@ -601,7 +601,7 @@ return {
           -- Parameters: _name, _object, _property_name, _list, _default_value, _item_description, _default_description
            list_menu_item("P1 Character", training_settings, "p1_character", p1_character,12,"Change the garbage pattern used by P1"),
           -- Parameters: _name, _object, _property_name, _min, _max, _loop, _default_value, _autofire_rate, description
-          integer_menu_item("Margin Time", training_settings, "pedagogical_integer", 1, 13, false, 1, nil, "Simulate different levels of Margin Time"),
+          integer_menu_item("Margin Time", training_settings, "margin_time", 1, 13, true, 1, nil, "Simulate different levels of Margin Time"),
 
           checkbox_menu_item("Show Display", training_settings, "show_display",true, "Show the On Screen Display"),
 
