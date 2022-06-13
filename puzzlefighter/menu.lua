@@ -644,7 +644,7 @@ function piecePause()
    end
 
 function togglemenu()
-if globals.options.in_match == false then
+if globals.state.in_match == false then
 	return
 end
 	globals.show_menu =  not globals.show_menu
