@@ -10,9 +10,11 @@ training_settings_file  = "training_settings.json"
 training_settings       = configModule.default_training_settings
 
 globals = {
-    options = {
-		in_match = false,
-        current_frame = 0,
+		state = {
+	in_match = false,
+	},
+	    options = {
+		current_frame = 0,
         training_options = nil,
         menuModule = nil, 
 		show_menu = false,
@@ -84,7 +86,8 @@ local function get_margin_time()
 	end
 	globals.options.p1.gameTime = gameTime
 	globals.options.p1.marginFix = marginFix
-	return gameTime and marginFix
+	
+
 end
 -- Remember all that this function does is map the number value from the menu
 -- To a hex for a pattern, use it when doing memory.writebyte()
@@ -250,11 +253,11 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
     util.handle_hotkeys()
 	--in game indicator
 	if memory.readword(0xFF8640) > 0 then
-	globals.options.in_match = true
-	else globals.options.in_match = false
+	globals.state.in_match = true
+	else globals.state.in_match = false
 	end
     -- Infinite time on CSS
-    
+
 	--Pause piece whenever the menu comes up. look @ menu.lua line 647 for Xref
 	if globals.show_menu == true then
 		menuModule.piecePause()
@@ -266,7 +269,7 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
     end
     -- Set current character
     -- Notice it uses the value from our getter function
-    if in_match == true then 
+    if globals.state.in_match == true then 
 	memory.writebyte(0xFF8382, get_p1_character())
 	end
 	
@@ -275,7 +278,7 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
 
 	--adjust margin time with settings
-if  memory.readword(0xFF8640) > (globals.options.p1.gameTime + 0x1A) then
+if  memory.readword(0xFF8640) > (globals.options.p1.gameTime + 0x1A) and marginFix == true then
         memory.writeword(0xFF8640, globals.options.p1.gameTime)
 end
 --memory.writeword(0xFF8640 + 0x400, 0x00)
