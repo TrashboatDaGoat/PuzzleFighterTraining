@@ -594,7 +594,7 @@ local p1_character = {
 local function get_menu() 
 return {
     {
-        name = "Menu 1",
+        name = "Menu",
         entries = {
           --                    Name            Settings      Default    Key on Training Mode Json Object         Description
           checkbox_menu_item("Infinite Time", training_settings, "infinite_time",true, "Setting this will cause the timer to not \ndecrement on the Character Select Screen"),
@@ -602,7 +602,7 @@ return {
            list_menu_item("P1 Character", training_settings, "p1_character", p1_character,12,"Change the garbage pattern used by P1"),
           -- Parameters: _name, _object, _property_name, _min, _max, _loop, _default_value, _autofire_rate, description
           integer_menu_item("Margin Time", training_settings, "margin_time", 1, 13, true, 1, nil, "Simulate different levels of Margin Time"),
-
+          checkbox_menu_item("Fix Margin Time", training_settings, "margin_fix",true, "If true: Margin time will stay at set level. \n Otherwise: Set the margin time, and progress normally afterwards"),
           checkbox_menu_item("Show Display", training_settings, "show_display",true, "Show the On Screen Display"),
 
         }

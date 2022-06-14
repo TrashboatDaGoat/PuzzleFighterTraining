@@ -11,82 +11,64 @@ training_settings       = configModule.default_training_settings
 
 globals = {
 		state = {
-	in_match = false,
-	},
+	        in_match = false,
+            timePassed = 0x00,
+            gameTime = 0x00,
+	    },
 	    options = {
-		current_frame = 0,
-        training_options = nil,
-        menuModule = nil, 
-		show_menu = false,
-        p1 = {
-            currentPattern = 0x0,
-            gemsToDrop = 0x0,
-			piecesDropped = 0x00,
-			diamondNumber = 0x00,
-			gameTime = 0x00,
-			marginFix = false,
-        },
-        p2 = {
-            currentPattern = 0x0,
-            gemsToDrop = 0x0,
-			piecesDropped = 0x0,
-			diamondNumber = 0x00,
-			timePassed = 0x00
-        }
+    		current_frame = 0,
+            training_options = nil,
+            menuModule = nil, 
+		    show_menu = false,
+            p1 = {
+                currentPattern = 0x0,
+                gemsToDrop = 0x0,
+                piecesDropped = 0x00,
+                diamondNumber = 0x00,
+            },
+            p2 = {
+                currentPattern = 0x0,
+                gemsToDrop = 0x0,
+                piecesDropped = 0x0,
+                diamondNumber = 0x00,
+            }
     },
 }
 
 local function get_margin_time()
 	local training_options_margin_time = globals.training_options.margin_time
-	local gameTime = globals.options.p1.gameTime
-	local marginFix = globals.options.p1.marginFix
+	local gameTime = globals.state.gameTime
 	
 	if training_options_margin_time == 1 then
 		gameTime = 0x02
-		marginFix = true
 	elseif training_options_margin_time == 2 then
 		gameTime = 0x4C
-		marginFix = true
 	elseif training_options_margin_time == 3 then
 		gameTime = 0x6A
-		marginFix = true
 	elseif training_options_margin_time == 4 then
 		gameTime = 0x88
-		marginFix = true
 	elseif training_options_margin_time == 5 then
 		gameTime = 0xA6
-		marginFix = true
 	elseif training_options_margin_time == 6 then
 		gameTime = 0xC4
-		marginFix = true
 	elseif training_options_margin_time == 7 then
 		gameTime = 0xE2
-		marginFix = true
 	elseif training_options_margin_time == 8 then
 		gameTime = 0x100
-		marginFix = true
 	elseif training_options_margin_time == 9 then
 		gameTime = 0x11E
-		marginFix = true
 	elseif training_options_margin_time == 10 then
 		gameTime = 0x13C
-		marginFix = true
 	elseif training_options_margin_time == 11 then
 		gameTime = 0x15A
-		marginFix = true
 	elseif training_options_margin_time == 12 then
 		gameTime = 0x178
-		marginFix = true
 	elseif training_options_margin_time == 13 then
 		gameTime = 0x196
-		marginFix = true
 	elseif training_options_margin_time == 0 then
 		gameTime = 0x01
-		marginFix = false
 	end
-	globals.options.p1.gameTime = gameTime
-	globals.options.p1.marginFix = marginFix
-	
+	globals.state.gameTime = gameTime	
 
 end
 -- Remember all that this function does is map the number value from the menu
@@ -229,7 +211,21 @@ end)
 input.registerhotkey(9, function()
 end)
 
--- Exercise: Move this to the util module
+local ran_margin_time_once = false
+function set_margin_time()
+    -- Uncomment this line to debug
+    -- print("Timer is at", memory.readword(0xFF8640))
+    if globals.training_options.margin_fix == true then
+        get_margin_time()
+        --adjust margin time with settings
+        memory.writeword(0xFF8640, globals.state.gameTime)
+        ran_margin_time_once = false
+    else if globals.training_options.margin_fix == false and ran_margin_time_once == false then 
+        memory.writeword(0xFF8640, globals.state.gameTime)
+        ran_margin_time_once = true
+        end
+    end
+end
 
 emu.registerstart(function() -- Called when lua is started
     util.load_training_data()
@@ -270,24 +266,27 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
     -- Set current character
     -- Notice it uses the value from our getter function
     if globals.state.in_match == true then 
-	memory.writebyte(0xFF8382, get_p1_character())
+	    memory.writebyte(0xFF8382, get_p1_character())
 	end
 	
 	--  to keep the gems floating
 	memory.writebyte(0xFF8715, 0x07) --P2
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
+    -- get gameTime
 
-	--adjust margin time with settings
-if  memory.readword(0xFF8640) > (globals.options.p1.gameTime + 0x1A) and marginFix == true then
-        memory.writeword(0xFF8640, globals.options.p1.gameTime)
-end
+    set_margin_time()
+-- if  memory.readword(0xFF8640) > (globals.options.p1.gameTime + 0x1A) and globals.options.p1.marginFix == true then
+--         print("Setting")
+--         memory.writeword(0xFF8640, globals.options.p1.gameTime)
+-- end
+
 --memory.writeword(0xFF8640 + 0x400, 0x00)
     
    
 	--read how many pieces P! has dropped in the game
 	globals.options.p1.piecesDropped = memory.readword(0xFF84F4)
     playerObject.read_player_vars(player_objects[1], player_objects[2])
-	globals.options.p2.timePassed = memory.readword(0xFF9040)
+	globals.options.timePassed = memory.readword(0xFF9040)
 	
 end)
 emu.registerafter(function() -- Called after a frame is drawn
