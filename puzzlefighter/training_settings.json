@@ -1,7 +1,9 @@
 {
+  "margin_time":4,
   "show_display":true,
   "infinite_time":true,
   "pedagogical_list":1,
-  "pedagogical_integer":4,
-  "p1_character":1
+  "pedagogical_integer":0,
+  "p1_character":1,
+  "margin_fix":true
 }

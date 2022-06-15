@@ -4,6 +4,7 @@ local default_training_settings = {
     show_display = true,
     pedagogical_list = 1,
     pedagogical_integer = 0,
+    margin_fix = 0
   }
   
 
