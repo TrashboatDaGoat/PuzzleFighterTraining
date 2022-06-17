@@ -577,6 +577,20 @@ function make_popup(_left, _top, _right, _bottom, _entries)
   return _p
 end
 
+local p2_character = {
+  "Morrigan",
+  "Chun_li",
+  "Ryu",
+  "Ken",
+  "Lei-Lei",
+  "Donovan",
+  "Felicia",
+  "Sakura",
+  "Devilot",
+  "Akuma",
+  "Dan",
+  "Select Character",
+}
 local p1_character = {
   "Morrigan",
   "Chun_li",
@@ -600,10 +614,12 @@ return {
           checkbox_menu_item("Infinite Time", training_settings, "infinite_time",true, "Setting this will cause the timer to not \ndecrement on the Character Select Screen"),
           -- Parameters: _name, _object, _property_name, _list, _default_value, _item_description, _default_description
            list_menu_item("P1 Character", training_settings, "p1_character", p1_character,12,"Change the garbage pattern used by P1"),
+		    list_menu_item("P2 Character", training_settings, "p2_character", p2_character,12,"Change the garbage pattern used by P2"),
           -- Parameters: _name, _object, _property_name, _min, _max, _loop, _default_value, _autofire_rate, description
           integer_menu_item("Margin Time", training_settings, "margin_time", 1, 13, true, 1, nil, "Simulate different levels of Margin Time"),
           checkbox_menu_item("Fix Margin Time", training_settings, "margin_fix",true, "If true: Margin time will stay at set level. \n Otherwise: Set the margin time, and progress normally afterwards"),
           checkbox_menu_item("Show Display", training_settings, "show_display",true, "Show the On Screen Display"),
+		    checkbox_menu_item("No Diamond", training_settings, "no_diamond",false, "Turn Off Diamonds"),
 
         }
       },
