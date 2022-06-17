@@ -13,18 +13,21 @@ Lua hotkeys for special actions atm (bind them using FBNeo input options)
 
 `Hotkey 2`: Get a free diamond
 
-`Hotkey 3`: Change character/pattern of p1
+`Hotkey 3`: Add 5 garbage to be sent to P2
 
-`Hotkey 4`: Change chracter/pattern of p2
+`Hotkey 4`: Add 5 garbage to be sent to P1
 
-`Hotkey 5`: Add 5 garbage to be sent to P2
+`Hotkey 5`: Minus 5 garbage from P2 queue
 
-`Hotkey 6`: Add 5 garbage to be sent to P1
-
-`Hotkey 7`: Minus 5 garbage from P2 queue
-
-`Hotkey 8`: Minus 5 garbage from P1 queue
+`Hotkey 6`: Minus 5 garbage from P1 queue
 
 Set P2 garbage queue to 0 and send to reset damage so you can check how much you're doing on separate combos/attacks 
 
-Margin time is still active, so reset if you wanna avoid that. 
+Margin time can be adjusted in the training menu 
+
+# Thanks and Recognition
+* Huge thanks to Juicey and the Puzzle Fighter community for sparking the creation of the pazzule lab channel where we've learned so much about how the game works. It only takes 1 lol
+* K.S. the hacker dog for uncovering so much about how garbage calculation works. their documentation and work for the X' patch made this a lot easier to do. Your work is the giant whose shoulders I stand on.
+* Bankbank for opening my eyes up to the world of Romhacking. Showed me alot of stuff in the field that made the stuff i did in this project a lot easier
+* I'd like to thank N-Bee for all their hard work helping this project function. Especially with all the gamedev project on their plate. I only asked them for a small consultation on possible this was and they really ran away with it.
+* Last but not least the greater Puzzle Wednesday community for being supportive of this particular brand of mad puzzle science. 
