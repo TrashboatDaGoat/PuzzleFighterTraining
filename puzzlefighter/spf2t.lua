@@ -110,6 +110,42 @@ local function get_p1_character()
 	return currentPattern
 end
 
+local function get_p2_character()
+    local training_options_p2_character = globals.training_options.p2_character
+	local currentPattern = globals.options.p2.currentPattern
+    -- If we reordered these I think we wouldn't even need the if/elseif block
+    -- e.g I think 0x0A == 10
+    if training_options_p2_character == 1  then
+		currentPattern = 0x00
+	elseif training_options_p2_character == 2 then
+		currentPattern = 0x01
+	elseif training_options_p2_character == 3 then
+		currentPattern = 0x02
+	elseif training_options_p2_character == 4 then
+		currentPattern = 0x03
+	elseif training_options_p2_character == 5 then
+		currentPattern = 0x04
+	elseif training_options_p2_character == 6 then
+		currentPattern = 0x05
+	elseif training_options_p2_character == 7 then
+		currentPattern = 0x06
+	elseif training_options_p2_character == 8 then
+		currentPattern = 0x07
+	elseif training_options_p2_character == 9 then
+		currentPattern = 0x08
+	elseif training_options_p2_character == 10 then
+		currentPattern = 0x09
+	elseif training_options_p2_character == 11 then
+		currentPattern = 0x0A
+	elseif training_options_p2_character == 12 then
+		currentPattern = globals.options.p2.currentPattern
+	end
+    -- Update our local options
+    globals.options.p2.currentPattern = currentPattern
+	-- Return for convenience, we could just key into globals.options.p1.currentPattern
+	return currentPattern
+end
+
 -- Hotkeys (set in menu)
 input.registerhotkey(1, function()
     -- print("Send "..globals.options.p2.gemsToDrop.." gems to p2!")
@@ -212,6 +248,12 @@ input.registerhotkey(9, function()
 end)
 
 local ran_margin_time_once = false
+function no_diamond()
+	if memory.readword(0xFF84F4) == memory.readword(0xFF84F6) - 2 then
+	memory.writeword(0xFF84F4, memory.readword(0xFF84F6))
+end
+
+end
 function set_margin_time()
     -- Uncomment this line to debug
     -- print("Timer is at", memory.readword(0xFF8640))
@@ -253,24 +295,26 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
 	else globals.state.in_match = false
 	end
     -- Infinite time on CSS
-
+	  if globals.training_options.infinite_time == true then
+        memory.writebyte(0xFF8B0E, 0x10) -- P1 Timer never changes
+        memory.writebyte(0xFF8B0E + 0x100, 0x10) -- P2 Timer never changes
+		end
 	--Pause piece whenever the menu comes up. look @ menu.lua line 647 for Xref
 	if globals.show_menu == true then
 		menuModule.piecePause()
-		
 	end
-    if globals.training_options.infinite_time == true then
-        memory.writebyte(0xFF8B0E, 0x10) -- P1 Timer never changes
-        memory.writebyte(0xFF8B0E + 0x100, 0x10) -- P2 Timer never changes
-    end
+  
+    
     -- Set current character
     -- Notice it uses the value from our getter function
     if globals.state.in_match == true then 
 	    memory.writebyte(0xFF8382, get_p1_character())
 	end
-	
+	 if globals.state.in_match == true then 
+	    memory.writebyte(0xFF8782, get_p2_character())
+	end
 	--  to keep the gems floating
-	memory.writebyte(0xFF8715, 0x07) --P2
+	memory.writebyte(0xFF8715, 0x01) --P2
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
     -- get gameTime
 
@@ -279,14 +323,16 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
 --         print("Setting")
 --         memory.writeword(0xFF8640, globals.options.p1.gameTime)
 -- end
-
+	if globals.training_options.no_diamond == true then
+	no_diamond()
+	end
 --memory.writeword(0xFF8640 + 0x400, 0x00)
     
    
 	--read how many pieces P! has dropped in the game
 	globals.options.p1.piecesDropped = memory.readword(0xFF84F4)
     playerObject.read_player_vars(player_objects[1], player_objects[2])
-	globals.options.timePassed = memory.readword(0xFF9040)
+	globals.state.timePassed = memory.readword(0xFF8640)
 	
 end)
 emu.registerafter(function() -- Called after a frame is drawn
