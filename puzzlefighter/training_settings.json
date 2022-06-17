@@ -1,9 +1,11 @@
 {
-  "margin_time":4,
   "show_display":true,
+  "margin_time":9,
+  "p1_character":3,
+  "p2_character":7,
   "infinite_time":true,
-  "pedagogical_list":1,
+  "margin_fix":false,
   "pedagogical_integer":0,
-  "p1_character":1,
-  "margin_fix":true
+  "pedagogical_list":1,
+  "no_diamond":true
 }
