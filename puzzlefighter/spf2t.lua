@@ -1,6 +1,6 @@
 -- This is how to do modules in lua so you keep your code neat.
 -- See bottom of util file for export.
-serialize  	            = require './scripts/ser' -- If you print out a table and get funky stuff, use this! print(serialize(mytable))
+serialize  	            = require './puzzlefighter/ser' -- If you print out a table and get funky stuff, use this! print(serialize(mytable))
 util                    = require './puzzlefighter/util'
 guiModule 		        = require './puzzlefighter/GUI'
 menuModule              = require './puzzlefighter/menu'
