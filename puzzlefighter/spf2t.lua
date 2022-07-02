@@ -34,6 +34,16 @@ globals = {
             }
     },
 }
+local function all_clear_gaming()
+	local address = 0xFFAB03
+		for i = 0, 208, 16 do
+			for j = 0, 10, 2 do
+        memory.writebyte(address + i + j, 0x0)
+			end
+		end
+
+end
+
 
 local function get_margin_time()
 	local training_options_margin_time = globals.training_options.margin_time
@@ -163,39 +173,8 @@ input.registerhotkey(2, function()
 
 end)
 
-
--- Drop Pattern for P1
-input.registerhotkey(3, function()
-    local currentPattern = get_p1_character()
-    currentPattern = currentPattern + 1
-
-    if currentPattern > 0x0A then
-        currentPattern = 0x00
-    end
-
-    globals.training_options.p1_character = currentPattern
-    -- Because we want our options to be able to changed by a hotkey
-    -- OR a training menu change, we need to save the training data to keep in sync
-    util.save_training_data()
-end)
-
--- Drop Pattern for P2
-input.registerhotkey(4, function()
-    local currentPattern = globals.options.p2.currentPattern
-    currentPattern = currentPattern + 1
-
-    if currentPattern > 0x0A then
-        currentPattern = 0x00
-    end
-
-    globals.options.p2.currentPattern = currentPattern
-	memory.writebyte(0xFF8382 + 0x400, globals.options.p2.currentPattern)
-
-end)
-
-
 -- Number of Gems to Drop for p1
-input.registerhotkey(5, function()
+input.registerhotkey(3, function()
     local gemsToDrop = globals.options.p1.gemsToDrop
     gemsToDrop = gemsToDrop + 5
 
@@ -207,7 +186,7 @@ input.registerhotkey(5, function()
 end)
 
 -- Number of Gems to Drop for p2
-input.registerhotkey(6, function()
+input.registerhotkey(4, function()
     local gemsToDrop = globals.options.p2.gemsToDrop
     gemsToDrop = gemsToDrop + 5
 
@@ -218,7 +197,7 @@ input.registerhotkey(6, function()
     globals.options.p2.gemsToDrop = gemsToDrop
 end)
 
-input.registerhotkey(7, function()
+input.registerhotkey(5, function()
 
     local gemsToDrop = globals.options.p1.gemsToDrop
     gemsToDrop = gemsToDrop - 5
@@ -231,7 +210,7 @@ input.registerhotkey(7, function()
 
 end)
 
-input.registerhotkey(8, function()
+input.registerhotkey(6, function()
 
     local gemsToDrop = globals.options.p2.gemsToDrop
     gemsToDrop = gemsToDrop - 5
@@ -244,6 +223,13 @@ input.registerhotkey(8, function()
 
 end)
 
+input.registerhotkey(7, function()
+all_clear_gaming()
+end)
+
+input.registerhotkey(8, function()
+
+end)
 input.registerhotkey(9, function()
 end)
 
@@ -314,7 +300,7 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
 	    memory.writebyte(0xFF8782, get_p2_character())
 	end
 	--  to keep the gems floating
-	memory.writebyte(0xFF8715, 0x01) --P2
+	--memory.writebyte(0xFF8715, 0x01) --P2
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
     -- get gameTime
 
