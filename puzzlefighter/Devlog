@@ -42,3 +42,28 @@ probably has something to do with my not understanding hex math that much, but i
 =======================================6/6/2022=========================================
 *tried to refactor the current GUI into a separate module. Didn't work 
 *cleaning up some stuff before I push this to Git so NBee can help with the menu stuff
+=======================================6/7/2022=========================================
+*NB made a pull request with a lot of the necessary changes for implementing a menu section
+=======================================6/8/2022=========================================
+*NB fixed my mistakes with altering their educational list.
+*The also gave me pointers on making menu works a little better. 
+*tried to get P1 piece to stay put during pause, but it's not completely working at the moment
+======================================6/11/2022=========================================
+*piece pause didn't work, NBee told me it was cuz the function wasn't exported properly.
+*also had some weird shit happen with the training menu not working, but that's cuz the game time was constantly being shifted back down to 0, so that was fixed by making the `freeze margin time` function reset the timer to 1
+*starting to work on options for adjusting margin time manually
+*Gael asked about a no diamond feature. I think that's easy enough. 
+======================================6/16/2022=========================================
+*skipped abuncha stuff gonna try to summarize
+*made a margin time option for the training menu using an interger list
+*I fucked it up somehow (didn't account for the function to change the game timer when the timer is less than the selected value.
+*NBee fixed it again.
+*lua works with the K' patch lets go
+*added a select P2 character option in the training menu and a No diamond checkbox function
+We're pretty much ready to go after a couple of housekeeping shit I needta handle
+
+======================================7/1/2022=========================================
+
+*during my stream, CHURRITOSCONSALSA gave me a lua script that clears out the P1 board. can use this information to figure out how board state work and maybe do some funny stuff. 
+
+*tried to make a similar version for P2, but it didn't work, may have to play around with it. 
