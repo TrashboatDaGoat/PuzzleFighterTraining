@@ -12,7 +12,7 @@ function draw_gui()
         gui.text(p1_base_x,base_y + 8, "P1 Drop #: "..globals.options.p1.gemsToDrop, "red")
         gui.text(p1_base_x,base_y + 16, "P1 Pieces Dropped: "..globals.options.p1.piecesDropped, "yellow" )
         gui.text(p1_base_x,base_y + 24, "P1 Diamond #: "..memory.readword(0xFF84F8), "yellow" )
-        gui.text(p2_base_x,base_y, "P2 Char: "..util.get_character_name_from_hex(memory.readbyte(0xFF8382)), "green")
+        gui.text(p2_base_x,base_y, "P2 Char: "..util.get_character_name_from_hex(memory.readbyte(0xFF8782)), "green")
         gui.text(p2_base_x,base_y + 8, "P2 Drop #: "..globals.options.p2.gemsToDrop, "red")
    end
 end
