@@ -24,6 +24,7 @@ local function print_training_info()
     print("4: Add Gems to Drop on P1")
     print("5: Minus Gems to Drop on P2")
     print("6: Minus Gems to Drop on P1")
+	print("7: clear your board")
 end
 
 local function get_character_hex_from_name( name )
