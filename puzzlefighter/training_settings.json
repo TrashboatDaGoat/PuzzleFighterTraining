@@ -1,11 +1,13 @@
 {
   "show_display":true,
-  "margin_time":9,
+  "p2_send_gems":0,
+  "margin_time":1,
   "p1_character":3,
-  "p2_character":7,
-  "infinite_time":true,
-  "margin_fix":false,
+  "margin_fix":true,
+  "p2_character":4,
+  "infinite_time":false,
+  "no_diamond":false,
   "pedagogical_integer":0,
-  "pedagogical_list":1,
-  "no_diamond":true
+  "p1_send_gems":0,
+  "pedagogical_list":1
 }
