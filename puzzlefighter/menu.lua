@@ -619,16 +619,17 @@ return {
           integer_menu_item("Margin Time", training_settings, "margin_time", 1, 13, true, 1, nil, "Simulate different levels of Margin Time"),
           checkbox_menu_item("Fix Margin Time", training_settings, "margin_fix",true, "If true: Margin time will stay at set level. \n Otherwise: Set the margin time, and progress normally afterwards"),
           checkbox_menu_item("Show Display", training_settings, "show_display",true, "Show the On Screen Display"),
-		    checkbox_menu_item("No Diamond", training_settings, "no_diamond",false, "Turn Off Diamonds"),
+		  checkbox_menu_item("No Diamond", training_settings, "no_diamond",false, "Turn Off Diamonds"),
 
         }
       },
-    --   {
-    --     name = "Menu 2",
-    --     entries = {
-    --       integer_menu_item("P1 Max Life", training_settings, "p1_max_life", 0, 288, false, 288, nil, "The max life, 288 is two bats"),
-    --     }
-    --   },
+       {
+         name = "Board Management",
+         entries = {
+           integer_menu_item("Send Gems to P1", training_settings, "p1_send_gems", 0, 100, true, 0, 10, "set the amount of gems you want to send to P1"),
+		   integer_menu_item("Send Gems to P2", training_settings, "p2_send_gems", 0, 100, true, 0, 10, "set the amount of gems you want to send to P2"),
+         }
+      },
     -- {
     --     name = "Menu 3",
     --     entries = {
