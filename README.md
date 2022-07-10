@@ -21,6 +21,8 @@ Lua hotkeys for special actions atm (bind them using FBNeo input options)
 
 `Hotkey 6`: Minus 5 garbage from P1 queue
 
+`Hotkey 7`: Clear P1's board
+
 Set P2 garbage queue to 0 and send to reset damage so you can check how much you're doing on separate combos/attacks 
 
 Margin time can be adjusted in the training menu 
@@ -30,5 +32,6 @@ Margin time can be adjusted in the training menu
 * K.S. the hacker dog for uncovering so much about how garbage calculation works. their documentation and work for the X' patch made this a lot easier to do. Your work is the giant whose shoulders I stand on.
 * Bankbank for opening my eyes up to the world of Romhacking. Showed me alot of stuff in the field that made the stuff i did in this project a lot easier
 * I'd like to thank N-Bee for all their hard work helping this project function. Especially with all the gamedev project on their plate. I only asked them for a small consultation on possible this was and they really ran away with it.
-*ChurritodConSalds for help with the board clearing lua
+*ChurritosConSalsa for help with the board clearing lua
+*CaptainFlab for their assistance with code for changing the pieces on demand
 * Last but not least the greater Puzzle Wednesday community for being supportive of this particular brand of mad puzzle science. 
