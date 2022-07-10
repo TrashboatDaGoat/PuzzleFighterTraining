@@ -6,6 +6,7 @@ guiModule 		        = require './puzzlefighter/GUI'
 menuModule              = require './puzzlefighter/menu'
 playerObject            = require './puzzlefighter/playerObject'
 configModule            = require './puzzlefighter/config'
+bMGMT					= require './puzzlefighter/boardMGMT'
 training_settings_file  = "training_settings.json"
 training_settings       = configModule.default_training_settings
 
@@ -34,14 +35,20 @@ globals = {
             }
     },
 }
-local function all_clear_gaming()
-	local address = 0xFFAB03
-		for i = 0, 208, 16 do
-			for j = 0, 10, 2 do
-        memory.writebyte(address + i + j, 0x0)
-			end
-		end
 
+
+local function get_p1_send_gems()
+	local gemsToDrop = globals.training_options.p1_send_gems
+	
+	globals.options.p1.gemsToDrop = gemsToDrop
+	return gemsToDrop
+end
+
+local function get_p2_send_gems()
+	local gemsToDrop = globals.training_options.p2_send_gems
+	
+	globals.options.p2.gemsToDrop = gemsToDrop
+	return gemsToDrop
 end
 
 
@@ -158,11 +165,17 @@ end
 
 -- Hotkeys (set in menu)
 input.registerhotkey(1, function()
-    -- print("Send "..globals.options.p2.gemsToDrop.." gems to p2!")
-    memory.writebyte(0xFF849E, globals.options.p1.gemsToDrop) -- Send  Gems to P2
-	memory.writebyte(0xFF889E, globals.options.p2.gemsToDrop) -- Send gems to P1
+    local keys = joypad.get()
+    -- print(serialize(keys))
+    if keys['P1 Up'] then 
+        --Do your thang here if up was pressed
+        print("Up was pressed while 1 was pressed")
+		memory.writebyte(0xFF849E, globals.options.p2.gemsToDrop) -- Send gems to P2
+    else
+        print("Up was not pressed while 5 was pressed")
+		memory.writebyte(0xFF889E, globals.options.p1.gemsToDrop) -- Send  Gems to P1
+    end
 end)
-
 --input.registerhotkey(2, function()
     -- print("Send "..globals.options.p2.gemsToDrop.." gems to p1!")
   --  memory.writebyte(0xFF889E, globals.options.p2.gemsToDrop) -- Send 60 Gems to P2
@@ -175,56 +188,24 @@ end)
 
 -- Number of Gems to Drop for p1
 input.registerhotkey(3, function()
-    local gemsToDrop = globals.options.p1.gemsToDrop
-    gemsToDrop = gemsToDrop + 5
 
-    if gemsToDrop > 0x4B then
-        gemsToDrop = 0x00
-    end
-
-    globals.options.p1.gemsToDrop = gemsToDrop
 end)
 
 -- Number of Gems to Drop for p2
 input.registerhotkey(4, function()
-    local gemsToDrop = globals.options.p2.gemsToDrop
-    gemsToDrop = gemsToDrop + 5
-
-    if gemsToDrop > 0x4B then
-        gemsToDrop = 0x00
-    end
-
-    globals.options.p2.gemsToDrop = gemsToDrop
+    
 end)
 
 input.registerhotkey(5, function()
-
-    local gemsToDrop = globals.options.p1.gemsToDrop
-    gemsToDrop = gemsToDrop - 5
-
-    if gemsToDrop < 0x00 then
-        gemsToDrop = 0x4B
-    end
-
-    globals.options.p1.gemsToDrop = gemsToDrop
 
 end)
 
 input.registerhotkey(6, function()
 
-    local gemsToDrop = globals.options.p2.gemsToDrop
-    gemsToDrop = gemsToDrop - 5
-
-    if gemsToDrop < 0x00 then
-        gemsToDrop = 0x4B
-    end
-
-    globals.options.p2.gemsToDrop = gemsToDrop
-
 end)
 
 input.registerhotkey(7, function()
-all_clear_gaming()
+bMGMT.all_clear_gaming()
 end)
 
 input.registerhotkey(8, function()
@@ -300,7 +281,7 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
 	    memory.writebyte(0xFF8782, get_p2_character())
 	end
 	--  to keep the gems floating
-	--memory.writebyte(0xFF8715, 0x01) --P2
+	memory.writebyte(0xFF8715, 0x01) --P2
     --memory.writebyte(0xFF8715 - 0x400, 0x07) --P1
     -- get gameTime
 
@@ -312,8 +293,9 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
 	if globals.training_options.no_diamond == true then
 	no_diamond()
 	end
---memory.writeword(0xFF8640 + 0x400, 0x00)
-    
+
+	get_p1_send_gems()
+    get_p2_send_gems()
    
 	--read how many pieces P! has dropped in the game
 	globals.options.p1.piecesDropped = memory.readword(0xFF84F4)
