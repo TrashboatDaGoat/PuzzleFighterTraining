@@ -4,7 +4,10 @@ local default_training_settings = {
     pedagogical_list = 1,
     pedagogical_integer = 0,
     no_diamond = false,
+	p2_send_gems = 0,
+	p1_send_gems = 0,
     margin_fix = 0
+	
   }
   
 
