@@ -13,15 +13,15 @@ Lua hotkeys for special actions atm (bind them using FBNeo input options)
 
 `Hotkey 2`: Get a free diamond
 
-`Hotkey 3`: Add 5 garbage to be sent to P2
+`Hotkey 3`: Change bottom gem of current piece. hold up to change top piece
 
-`Hotkey 4`: Add 5 garbage to be sent to P1
+`Hotkey 4`: Clear P1's board
 
 `Hotkey 5`: Minus 5 garbage from P2 queue
 
 `Hotkey 6`: Minus 5 garbage from P1 queue
 
-`Hotkey 7`: Clear P1's board
+
 
 Set P2 garbage queue to 0 and send to reset damage so you can check how much you're doing on separate combos/attacks 
 
