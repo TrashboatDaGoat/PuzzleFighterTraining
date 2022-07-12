@@ -77,3 +77,6 @@ We're pretty much ready to go after a couple of housekeeping shit I needta handl
 *Also made some changes to the send gems function so now you have to hold up to send gems to p2, and can just press the button itself to send gems to P1
 
 *refactored the all clear function to a separate lua script, gonna put a few of the newer ones there to keep things neat. 
+======================================7/11/2022========================================
+*goofed around with the piece change code from ChurritosCS and CaptainFlab had some difficulties, but it's done. 
+*Looking at the code, it's possible to force next queue to have a certain piece. similar to how this piece change code works. 
