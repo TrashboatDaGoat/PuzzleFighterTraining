@@ -4,6 +4,7 @@ serialize  	            = require './puzzlefighter/ser' -- If you print out a ta
 util                    = require './puzzlefighter/util'
 guiModule 		        = require './puzzlefighter/GUI'
 menuModule              = require './puzzlefighter/menu'
+menuF					= require './puzzlefighter/menuFunctions'
 playerObject            = require './puzzlefighter/playerObject'
 configModule            = require './puzzlefighter/config'
 bMGMT					= require './puzzlefighter/boardMGMT'
@@ -36,20 +37,6 @@ globals = {
     },
 }
 
-
-local function get_p1_send_gems()
-	local gemsToDrop = globals.training_options.p1_send_gems
-	
-	globals.options.p1.gemsToDrop = gemsToDrop
-	return gemsToDrop
-end
-
-local function get_p2_send_gems()
-	local gemsToDrop = globals.training_options.p2_send_gems
-	
-	globals.options.p2.gemsToDrop = gemsToDrop
-	return gemsToDrop
-end
 
 
 local function get_margin_time()
@@ -91,77 +78,7 @@ end
 -- Remember all that this function does is map the number value from the menu
 -- To a hex for a pattern, use it when doing memory.writebyte()
 -- To do, move these types of functions to another file
-local function get_p1_character()
-    local training_options_p1_character = globals.training_options.p1_character
-	local currentPattern = globals.options.p1.currentPattern
-    -- If we reordered these I think we wouldn't even need the if/elseif block
-    -- e.g I think 0x0A == 10
-    if training_options_p1_character == 1  then
-		currentPattern = 0x00
-	elseif training_options_p1_character == 2 then
-		currentPattern = 0x01
-	elseif training_options_p1_character == 3 then
-		currentPattern = 0x02
-	elseif training_options_p1_character == 4 then
-		currentPattern = 0x03
-	elseif training_options_p1_character == 5 then
-		currentPattern = 0x04
-	elseif training_options_p1_character == 6 then
-		currentPattern = 0x05
-	elseif training_options_p1_character == 7 then
-		currentPattern = 0x06
-	elseif training_options_p1_character == 8 then
-		currentPattern = 0x07
-	elseif training_options_p1_character == 9 then
-		currentPattern = 0x08
-	elseif training_options_p1_character == 10 then
-		currentPattern = 0x09
-	elseif training_options_p1_character == 11 then
-		currentPattern = 0x0A
-	elseif training_options_p1_character == 12 then
-		currentPattern = globals.options.p1.currentPattern
-	end
-    -- Update our local options
-    globals.options.p1.currentPattern = currentPattern
-	-- Return for convenience, we could just key into globals.options.p1.currentPattern
-	return currentPattern
-end
 
-local function get_p2_character()
-    local training_options_p2_character = globals.training_options.p2_character
-	local currentPattern = globals.options.p2.currentPattern
-    -- If we reordered these I think we wouldn't even need the if/elseif block
-    -- e.g I think 0x0A == 10
-    if training_options_p2_character == 1  then
-		currentPattern = 0x00
-	elseif training_options_p2_character == 2 then
-		currentPattern = 0x01
-	elseif training_options_p2_character == 3 then
-		currentPattern = 0x02
-	elseif training_options_p2_character == 4 then
-		currentPattern = 0x03
-	elseif training_options_p2_character == 5 then
-		currentPattern = 0x04
-	elseif training_options_p2_character == 6 then
-		currentPattern = 0x05
-	elseif training_options_p2_character == 7 then
-		currentPattern = 0x06
-	elseif training_options_p2_character == 8 then
-		currentPattern = 0x07
-	elseif training_options_p2_character == 9 then
-		currentPattern = 0x08
-	elseif training_options_p2_character == 10 then
-		currentPattern = 0x09
-	elseif training_options_p2_character == 11 then
-		currentPattern = 0x0A
-	elseif training_options_p2_character == 12 then
-		currentPattern = globals.options.p2.currentPattern
-	end
-    -- Update our local options
-    globals.options.p2.currentPattern = currentPattern
-	-- Return for convenience, we could just key into globals.options.p1.currentPattern
-	return currentPattern
-end
 
 -- Hotkeys (set in menu)
 input.registerhotkey(1, function()
@@ -188,12 +105,12 @@ end)
 
 -- Number of Gems to Drop for p1
 input.registerhotkey(3, function()
-
+bMGMT.piece_change()
 end)
 
--- Number of Gems to Drop for p2
+
 input.registerhotkey(4, function()
-    
+bMGMT.all_clear_gaming()  
 end)
 
 input.registerhotkey(5, function()
@@ -205,7 +122,7 @@ input.registerhotkey(6, function()
 end)
 
 input.registerhotkey(7, function()
-bMGMT.all_clear_gaming()
+
 end)
 
 input.registerhotkey(8, function()
@@ -275,10 +192,10 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
     -- Set current character
     -- Notice it uses the value from our getter function
     if globals.state.in_match == true then 
-	    memory.writebyte(0xFF8382, get_p1_character())
+	    memory.writebyte(0xFF8382, menuF.get_p1_character())
 	end
 	 if globals.state.in_match == true then 
-	    memory.writebyte(0xFF8782, get_p2_character())
+	    memory.writebyte(0xFF8782, menuF.get_p2_character())
 	end
 	--  to keep the gems floating
 	memory.writebyte(0xFF8715, 0x01) --P2
@@ -294,8 +211,9 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
 	no_diamond()
 	end
 
-	get_p1_send_gems()
-    get_p2_send_gems()
+	menuF.get_p1_send_gems()
+    menuF.get_p2_send_gems()
+
    
 	--read how many pieces P! has dropped in the game
 	globals.options.p1.piecesDropped = memory.readword(0xFF84F4)
