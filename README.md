@@ -17,9 +17,7 @@ Lua hotkeys for special actions atm (bind them using FBNeo input options)
 
 `Hotkey 4`: Clear P1's board
 
-`Hotkey 5`: Minus 5 garbage from P2 queue
 
-`Hotkey 6`: Minus 5 garbage from P1 queue
 
 
 
