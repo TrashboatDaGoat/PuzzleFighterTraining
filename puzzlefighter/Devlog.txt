@@ -80,3 +80,6 @@ We're pretty much ready to go after a couple of housekeeping shit I needta handl
 ======================================7/11/2022========================================
 *goofed around with the piece change code from ChurritosCS and CaptainFlab had some difficulties, but it's done. 
 *Looking at the code, it's possible to force next queue to have a certain piece. similar to how this piece change code works. 
+======================================7/12/2022========================================
+*made a code to force next queue to be a certain color. had some issue, but they were due to syntax issues from writing a list item in code and not properly exporting code. 
+*Also was able to figure out how to keep training mode settings from being saved. (thanks NB)
