@@ -191,11 +191,19 @@ emu.registerbefore(function() -- Called before a frame is drawn (e.g. set inputs
     
     -- Set current character
     -- Notice it uses the value from our getter function
-    if globals.state.in_match == true then 
+    if globals.state.in_match == true and globals.training_options.p1_character ~= 12 then 
 	    memory.writebyte(0xFF8382, menuF.get_p1_character())
 	end
-	 if globals.state.in_match == true then 
+	if globals.state.in_match == true and globals.training_options.p2_character ~= 12 then 
 	    memory.writebyte(0xFF8782, menuF.get_p2_character())
+	end
+	
+	--Force colors in next queue
+    if globals.state.in_match == true and globals.training_options.bottom_piece ~= 9 then 
+	    memory.writebyte(0xFF8457, bMGMT.get_bottom_piece())
+	end
+	if globals.state.in_match == true and globals.training_options.top_piece ~= 9 then 
+		memory.writebyte(0xFF8459, bMGMT.get_top_piece())
 	end
 	--  to keep the gems floating
 	memory.writebyte(0xFF8715, 0x01) --P2
