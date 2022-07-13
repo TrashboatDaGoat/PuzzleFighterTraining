@@ -61,3 +61,25 @@ probably has something to do with my not understanding hex math that much, but i
 *lua works with the K' patch lets go
 *added a select P2 character option in the training menu and a No diamond checkbox function
 We're pretty much ready to go after a couple of housekeeping shit I needta handle
+
+======================================7/1/2022=========================================
+
+*during my stream, CHURRITOSCONSALSA gave me a lua script that clears out the P1 board. can use this information to figure out how board state work and maybe do some funny stuff. 
+
+*tried to make a similar version for P2, but it didn't work, may have to play around with it. 
+*later update: Churritos made a similar version for P2 i didn't have the right mem addy cuz the 400 offset wasn't the same for board management
+
+======================================7/10/2022========================================
+
+* had some time so I thought I'd clean up the code for chaning the piece the Churritos posted in the training mode channel. Took me a minute, but i think I understand how it works. 
+*tried to change gemsto drop function so it can be changed thrugh the menu and free up some hotkeys
+   - had some issues, but N-Bee helped me fix it up. 
+*Also made some changes to the send gems function so now you have to hold up to send gems to p2, and can just press the button itself to send gems to P1
+
+*refactored the all clear function to a separate lua script, gonna put a few of the newer ones there to keep things neat. 
+======================================7/11/2022========================================
+*goofed around with the piece change code from ChurritosCS and CaptainFlab had some difficulties, but it's done. 
+*Looking at the code, it's possible to force next queue to have a certain piece. similar to how this piece change code works. 
+======================================7/12/2022========================================
+*made a code to force next queue to be a certain color. had some issue, but they were due to syntax issues from writing a list item in code and not properly exporting code. 
+*Also was able to figure out how to keep training mode settings from being saved. (thanks NB)

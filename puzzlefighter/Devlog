@@ -67,3 +67,13 @@ We're pretty much ready to go after a couple of housekeeping shit I needta handl
 *during my stream, CHURRITOSCONSALSA gave me a lua script that clears out the P1 board. can use this information to figure out how board state work and maybe do some funny stuff. 
 
 *tried to make a similar version for P2, but it didn't work, may have to play around with it. 
+*later update: Churritos made a similar version for P2. I didn't have the right mem addy cuz the 400 offset wasn't the same for board management
+
+======================================7/10/2022========================================
+
+* had some time so I thought I'd clean up the code for chaning the piece the Churritos posted in the training mode channel. Took me a minute, but i think I understand how it works. 
+*tried to change gemsto drop function so it can be changed thrugh the menu and free up some hotkeys
+   - had some issues, but N-Bee helped me fix it up. 
+*Also made some changes to the send gems function so now you have to hold up to send gems to p2, and can just press the button itself to send gems to P1
+
+*refactored the all clear function to a separate lua script, gonna put a few of the newer ones there to keep things neat. 

@@ -20,11 +20,8 @@ local function print_training_info()
     print("Hotkeys (Set in fbneo input --> Lua Hotkeys):")
     print("1: Send queue'd Gems to both players")
     print("2: Free Diamond")
-    print("3: Add Gems to Drop on P2")
-    print("4: Add Gems to Drop on P1")
-    print("5: Minus Gems to Drop on P2")
-    print("6: Minus Gems to Drop on P1")
-	print("7: clear your board")
+    print("3: Change bottom half of current piece /n hold up to change top piece")
+    print("4: clear your board")
 end
 
 local function get_character_hex_from_name( name )
@@ -89,9 +86,9 @@ end
 
 function save_training_data()
 	-- backup_recordings()
-	if not write_object_to_json_file(training_settings, training_settings_file) then
-		print(string.format("Error: Failed to save training settings to \"%s\"", training_settings_file))
-	end
+	--if not write_object_to_json_file(training_settings, training_settings_file) then
+		--print(string.format("Error: Failed to save training settings to \"%s\"", training_settings_file))
+	--end
 end
 function load_training_data()
 	local _training_settings = read_object_from_json_file(training_settings_file)
